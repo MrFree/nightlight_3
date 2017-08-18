@@ -18,10 +18,10 @@ int btnState = 0;
 unsigned long previousMillis = 0;        // will store last time LED was updated
 unsigned LedMode = 6;
 
-int ledState = 0; 
-int ledStateR = 0; 
-int ledStateG = 0; 
-int ledStateB = 0; 
+//int ledState = 0; 
+//int ledStateR = 0; 
+//int ledStateG = 0; 
+//int ledStateB = 0; 
 
 
 
@@ -49,16 +49,10 @@ void setup() {
 pinMode (ledR, OUTPUT);
 pinMode (ledG, OUTPUT);
 pinMode (ledB, OUTPUT);
-
 pinMode (ledW, OUTPUT);
-digitalWrite(ledW, HIGH);
-
-digitalWrite(ledR, LOW);
-digitalWrite(ledG, LOW);
-digitalWrite(ledB, LOW);
-
 pinMode (pBtn, INPUT_PULLUP);
 
+ledset (LOW,LOW,LOW,HIGH);
 
 }
 
