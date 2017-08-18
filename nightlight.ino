@@ -63,13 +63,7 @@ pinMode (pBtn, INPUT_PULLUP);
 }
 
 void loop() {
- 
 
-  // put your main code here, to run repeatedly:
-
-//digitalWrite(ledR, LOW);
-//digitalWrite(ledG, LOW);
-//digitalWrite(ledB, LOW);
   int reading = digitalRead(pBtn);
 if (reading == HIGH) { reading = LOW; } else {reading = HIGH;}
   // check to see if you just pressed the button
@@ -92,47 +86,63 @@ if (reading == HIGH) { reading = LOW; } else {reading = HIGH;}
 
       // only toggle the LED if the new button state is HIGH
       if (btnState == HIGH) {
+          // кнопа нажата
         LedMode++;
+        
         if (LedMode > 7) {LedMode=0;}
         
-#ifdef beepEnable
-{tone (beepPin,5000,50);}
-#endif
+                                      #ifdef beepEnable
+                                              {tone (beepPin,5000,50);}
+                                      #endif
+          if (LedMode<7) {
+              switch (LedMode) {
+
+                    case 0:  ledset (LOW,LOW,LOW,HIGH);
+                      break;
+                    case 1:  ledset (HIGH,LOW,LOW,HIGH);
+                      break;
+                    case 2:  ledset (LOW,HIGH,LOW,HIGH);
+                      break;
+                    case 3: ledset (LOW,LOW,HIGH,HIGH);
+                      break;
+                    case 4: ledset (HIGH,HIGH,LOW,HIGH);
+                      break;
+                    case 5: ledset (HIGH,LOW,HIGH,HIGH);
+                      break;
+                    case 6: ledset (LOW,HIGH,HIGH,HIGH);
+                      break;
+                    case 7: crazy();
+                      break;                    
+                    default:   ledset (LOW,LOW,LOW,LOW);
+                      break;
+                  }
+            
+                }
+      
+      
+      
       }
     }
   }
-           // LedMode = 6; //DEBUG
-switch (LedMode) {
-    case 0:  ledset (HIGH,LOW,LOW);
-      break;
-    case 1:  ledset (LOW,HIGH,LOW);
-      break;
-    case 2: ledset (LOW,LOW,HIGH);
-      break;
-    case 3: ledset (HIGH,HIGH,LOW);
-      break;
-    case 4: ledset (HIGH,LOW,HIGH);
-      break;
-    case 5: ledset (LOW,HIGH,HIGH);
-      break;
-    case 6: crazy();
-      break;
-    case 7:
-    default:   ledset (LOW,LOW,LOW);
-      break;
-  }
-  
+
+if (LedMode == 7 ) {crazy();}
+
+
+
+
+
   
 lastButtonState = reading;
 }
 
 
 
-void ledset (int RedL, int GreenL, int BlueL)
+void ledset (int RedL, int GreenL, int BlueL, int WhiteL)
 {
           digitalWrite(ledR, RedL);
           digitalWrite(ledG, GreenL);
           digitalWrite(ledB, BlueL); 
+          digitalWrite(ledW, WhiteL);
 }
 
 void moreRandom () 
