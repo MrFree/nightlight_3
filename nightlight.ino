@@ -61,6 +61,80 @@ pinMode (pBtn, INPUT_PULLUP);
 
 
 }
+
+void loop() {
+ 
+
+  // put your main code here, to run repeatedly:
+
+//digitalWrite(ledR, LOW);
+//digitalWrite(ledG, LOW);
+//digitalWrite(ledB, LOW);
+  int reading = digitalRead(pBtn);
+if (reading == HIGH) { reading = LOW; } else {reading = HIGH;}
+  // check to see if you just pressed the button
+  // (i.e. the input went from LOW to HIGH), and you've waited long enough
+  // since the last press to ignore any noise:
+
+  // If the switch changed, due to noise or pressing:
+  if (reading != lastButtonState) {
+    // reset the debouncing timer
+    lastDebounceTime = millis();
+  }
+
+  if ((millis() - lastDebounceTime) > debounceDelay) {
+    // whatever the reading is at, it's been there for longer than the debounce
+    // delay, so take it as the actual current state:
+
+    // if the button state has changed:
+    if (reading != btnState) {
+      btnState = reading;
+
+      // only toggle the LED if the new button state is HIGH
+      if (btnState == HIGH) {
+        LedMode++;
+        if (LedMode > 7) {LedMode=0;}
+        
+#ifdef beepEnable
+{tone (beepPin,5000,50);}
+#endif
+      }
+    }
+  }
+           // LedMode = 6; //DEBUG
+switch (LedMode) {
+    case 0:  ledset (HIGH,LOW,LOW);
+      break;
+    case 1:  ledset (LOW,HIGH,LOW);
+      break;
+    case 2: ledset (LOW,LOW,HIGH);
+      break;
+    case 3: ledset (HIGH,HIGH,LOW);
+      break;
+    case 4: ledset (HIGH,LOW,HIGH);
+      break;
+    case 5: ledset (LOW,HIGH,HIGH);
+      break;
+    case 6: crazy();
+      break;
+    case 7:
+    default:   ledset (LOW,LOW,LOW);
+      break;
+  }
+  
+  
+lastButtonState = reading;
+}
+
+
+
+void ledset (int RedL, int GreenL, int BlueL)
+{
+          digitalWrite(ledR, RedL);
+          digitalWrite(ledG, GreenL);
+          digitalWrite(ledB, BlueL); 
+}
+
 void moreRandom () 
 {
   int a = random(1, 2000);
@@ -113,109 +187,5 @@ void crazy()
 
 
 }
-
-void loop() {
- 
-
-  // put your main code here, to run repeatedly:
-
-//digitalWrite(ledR, LOW);
-//digitalWrite(ledG, LOW);
-//digitalWrite(ledB, LOW);
-  int reading = digitalRead(pBtn);
-if (reading == HIGH) { reading = LOW; } else {reading = HIGH;}
-  // check to see if you just pressed the button
-  // (i.e. the input went from LOW to HIGH), and you've waited long enough
-  // since the last press to ignore any noise:
-
-  // If the switch changed, due to noise or pressing:
-  if (reading != lastButtonState) {
-    // reset the debouncing timer
-    lastDebounceTime = millis();
-  }
-
-  if ((millis() - lastDebounceTime) > debounceDelay) {
-    // whatever the reading is at, it's been there for longer than the debounce
-    // delay, so take it as the actual current state:
-
-    // if the button state has changed:
-    if (reading != btnState) {
-      btnState = reading;
-
-      // only toggle the LED if the new button state is HIGH
-      if (btnState == HIGH) {
-        LedMode++;
-        if (LedMode > 7) {LedMode=0;}
-        
-#ifdef beepEnable
-{tone (beepPin,5000,50);}
-#endif
-      }
-    }
-  }
-           // LedMode = 6; //DEBUG
-switch (LedMode) {
-    case 0:
-      //do something when var equals 1
-          digitalWrite(ledR, HIGH);
-          digitalWrite(ledG, LOW);
-          digitalWrite(ledB, LOW);
-      break;
-    case 1:
-      //do something when var equals 2
-          digitalWrite(ledR, LOW);
-          digitalWrite(ledG, HIGH);
-          digitalWrite(ledB, LOW);
-      break;
-      case 2:
-      //do something when var equals 2
-          digitalWrite(ledR, LOW);
-          digitalWrite(ledG, LOW);
-          digitalWrite(ledB, HIGH);
-      break;
-      case 3:
-      //do something when var equals 2
-          digitalWrite(ledR, HIGH);
-          digitalWrite(ledG, HIGH);
-          digitalWrite(ledB, LOW);
-      break;
-      case 4:
-      //do something when var equals 2
-          digitalWrite(ledR, HIGH);
-          digitalWrite(ledG, LOW);
-          digitalWrite(ledB, HIGH);
-      break;
-      case 5:
-      //do something when var equals 2
-
-          digitalWrite(ledR, LOW);
-          digitalWrite(ledG, HIGH);
-          digitalWrite(ledB, HIGH);
-      break;
-      case 6:
-      //do something when var equals 2
-    // дергаем бешеную мигалку
-    crazy();
-     break;
-
-
-
-    case 7:
-    default: 
-      // if nothing else matches, do the default
-      // default is optional
-          digitalWrite(ledR, LOW);
-          digitalWrite(ledG, LOW);
-          digitalWrite(ledB, LOW);
-
-      
-    break;
-  }
-  
-  
-lastButtonState = reading;
-}
-
-
 
 
